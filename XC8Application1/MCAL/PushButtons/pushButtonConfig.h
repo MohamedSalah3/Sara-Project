@@ -1,14 +1,13 @@
 /*
- * PushButtons.h
+ * pushButtonConfig.h
  *
- * Created: 19-May-21 6:55:21 PM
+ * Created: 20-May-21 4:36:50 PM
  *  Author: Dell
  */ 
 
 
-#ifndef PUSHBUTTONS_H_
-#define PUSHBUTTONS_H_
-
+#ifndef PUSHBUTTONCONFIG_H_
+#define PUSHBUTTONCONFIG_H_
 #include "pushButtonConfig.h"
 
 typedef enum En_buttonId_t{
@@ -51,4 +50,5 @@ extern void check_button(void);
 
 
 
-#endif /* PUSHBUTTONS_H_ */
+
+#endif /* PUSHBUTTONCONFIG_H_ */
