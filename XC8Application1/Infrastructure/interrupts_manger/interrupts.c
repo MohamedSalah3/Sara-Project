@@ -5,43 +5,39 @@
  *  Author: Dell
  */ 
 #include "Interrupts.h"
-ptr_to_Fun INT0_external_interrupt;
-ptr_to_Fun INT1_external_interrupt;
-ptr_to_Fun INT2_external_interrupt;//=EXTI;
-ptr_to_Fun TIMER2COMP;//=Timer2_interrupt_COMP_routine;
-ptr_to_Fun TIMER2OVF;//=Timer2_interrupt_routine;
-ptr_to_Fun TIMER1CAPT;
-ptr_to_Fun TIMER1COMPA;
-ptr_to_Fun TIMER1COMPB;
-ptr_to_Fun TIMER1OVF;
-ptr_to_Fun TIMER0COMP;//=Timer_interrupt_COMP_routine;
-ptr_to_Fun TIMER0OVF_INT=timer_interrupt;
-ptr_to_Fun SPI_STC;//=SPI_ISR;
-ptr_to_Fun USART_RXC;//=UartRecieveInterrupt;
-ptr_to_Fun USART_UDRE;
-ptr_to_Fun USART_TXC;//=UartTransmitInterrupt;
-ptr_to_Fun ADC_INT;
-ptr_to_Fun EE_RDY;
-ptr_to_Fun ANA_COMP;
-ptr_to_Fun TWI_I2C;
-ptr_to_Fun SPM_RDY;
+ptr_to_Fun INT0_external_interrupt;//1
+ptr_to_Fun INT1_external_interrupt;//2
+ptr_to_Fun TIMER1CAPT;//3
+ptr_to_Fun TIMER1COMPA;//4
+
+ptr_to_Fun TIMER1OVF;//5
+ptr_to_Fun TIMER0OVF;//6
+ptr_to_Fun USART0_RX;//=UartRecieveInterrupt;
+ptr_to_Fun USART0_UDRE;//8
+ptr_to_Fun USART0_TX;//=UartTransmitInterrupt;
+ptr_to_Fun ANALOG_COMP;//10
+ptr_to_Fun PIN_CHANGE; //11
+ptr_to_Fun TIMER1COMPB;//12
+ptr_to_Fun TIMER0COMPA;//13
+ptr_to_Fun TIMER0COMPB;//14
+ptr_to_Fun USI_START;//15
+ptr_to_Fun USI_OVF;//16
+ptr_to_Fun EE_RDY;//17
+ptr_to_Fun WDT_OVF;//18
+
+
 
 void G_interrupt_Enable(void)
 {
 	SREG |=(0x80);
 }
-void EX_interrupt_enable2(void)
-{
-	CLEAR_BIT(PORTB_DIR,2);/*Input*/
-	SET_BIT(PORTB_DATA,2);/*Pullup*/
-	SET_BIT(GICR,INT2);/*EXT2*/
-	SET_BIT(MCUCSR,6);/*Rising*/
-}
+
+
 void EX_interrupt_enable1(void)
 {
 	CLEAR_BIT(PORTD_DIR,3);
 	SET_BIT(PORTD_DATA,3);
-	SET_BIT(GICR,INT1);
+	SET_BIT(GIMSK,INT1);
 	SET_BIT(MCUCR,2);/*Any logical change*/
 	CLEAR_BIT(MCUCR,3);
 }
@@ -49,7 +45,7 @@ void EX_interrupt_enable0(void)
 {
 	CLEAR_BIT(PORTD_DIR,2);
 	SET_BIT(PORTD_DATA,2);
-	SET_BIT(GICR,INT0);
+	SET_BIT(GIMSK,INT0);
 	SET_BIT(MCUCR,0);/*Any logical change*/
 	CLEAR_BIT(MCUCR,1);
 	
@@ -75,111 +71,104 @@ void __vector_2(void)
 void __vector_3(void) __attribute__((signal));
 void __vector_3(void)
 {
-	INT2_external_interrupt();
+	TIMER1CAPT();
 }
 
 
 void __vector_4(void) __attribute__((signal));
 void __vector_4(void)
 {
-	TIMER2COMP();
+	TIMER1COMPA();
 }
 
 
 void __vector_5(void) __attribute__((signal));
 void __vector_5(void)
 {
-	TIMER2OVF();
+	TIMER1OVF();
 }
 
 void __vector_6(void) __attribute__((signal));
 void __vector_6(void)
 {
-	TIMER1CAPT();
+	TIMER0OVF();
 }
 
 void __vector_7(void) __attribute__((signal));
 void __vector_7(void)
 {
-	TIMER1COMPA();
+	USART0_RX();
 }
 
 void __vector_8(void) __attribute__((signal));
 void __vector_8(void)
 {
-	TIMER1COMPB();
+	USART0_UDRE();
 }
 
 void __vector_9(void) __attribute__((signal));
 void __vector_9(void)
 {
-	TIMER1OVF();
+	USART0_TX();	
 }
 
 void __vector_10(void) __attribute__((signal));
 void __vector_10(void)
 {
-
-	TIMER0COMP();
+ANALOG_COMP();
+	
 }
 
 void __vector_11(void) __attribute__((signal));
 void __vector_11(void)
 {
+PIN_CHANGE();
 
-	TIMER0OVF_INT();
 }
 
 void __vector_12(void) __attribute__((signal));
 void __vector_12(void)
 {
-	SPI_STC();
+	TIMER1COMPB();
 }
 
 void __vector_13(void) __attribute__((signal));
 void __vector_13(void)
 {
-	USART_RXC();
+	
+	TIMER0COMPA();
+
 }
 
 void __vector_14(void) __attribute__((signal));
 void __vector_14(void)
 {
-	USART_UDRE();
+	TIMER0COMPB();
+	
 }
 
 void __vector_15(void) __attribute__((signal));
 void __vector_15(void)
 {
-	USART_TXC();
+	
+	USI_START();
+	
 }
 
 void __vector_16(void) __attribute__((signal));
 void __vector_16(void)
-{
-	ADC_INT();
+{USI_OVF();
 }
 
 void __vector_17(void) __attribute__((signal));
 void __vector_17(void)
 {
 	EE_RDY();
-}
 
+}
 void __vector_18(void) __attribute__((signal));
 void __vector_18(void)
 {
-	ANA_COMP();
+		WDT_OVF();
 }
-
-void __vector_19(void) __attribute__((signal));
-void __vector_19(void)
-{
-	TWI_I2C();
-}
-
-void __vector_20(void) __attribute__((signal));
-void __vector_20(void)
-{
-	SPM_RDY();
 }

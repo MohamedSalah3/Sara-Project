@@ -154,6 +154,15 @@
     <Compile Include="MCAL\Timer\Timer_Config.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MCAL\UART\UartRecieve\Uart_Recieve.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\UART\UartRecieve\Uart_Recieve.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\UART\UartRecieve\Uart_Recieve_Config.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MCAL\UART\UartSend\uart_send.h">
       <SubType>compile</SubType>
     </Compile>
